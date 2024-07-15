@@ -1,5 +1,8 @@
 package datastructures.linkedlist;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class LinkedList
 {
     private Node head;
@@ -282,6 +285,225 @@ public class LinkedList
 
         }
         tail = node;
+    }
+
+    public Node findMiddleNode()
+    {
+        if (head == null && tail == null) return null;
+        if (head == tail) return head;
+        Node node = head;
+        Node anotherNode = head;
+        int counter = 1;
+        while(node != null)
+        {
+            if (counter %2 ==0)
+            {
+                anotherNode = anotherNode.next;
+            }
+            node = node.next;
+            counter++;
+        }
+        return anotherNode;
+    }
+
+    public boolean hasLoop()
+    {
+        if (head == null && tail == null) return false;
+        Node node = head;
+        Node anotherNode = head;
+        int counter =1;
+        while(node.next != null)
+        {
+            if (node.next == anotherNode)
+            {
+                return true;
+            }
+            if (counter %2 ==0)
+            {
+                anotherNode = anotherNode.next;
+            }
+
+            node = node.next;
+            counter++;
+        }
+
+        return false;
+    }
+
+    public Node findKthFromEnd(int k)
+    {
+        if (head == null && tail == null) return null;
+        if (k<0) return null;
+        Node node = head;
+        Node kthNodeFromEnd = null;
+        int counter = 1;
+        while(node != null)
+        {
+            if (counter == k) kthNodeFromEnd = head;
+            if (counter > k)
+            {
+                kthNodeFromEnd = kthNodeFromEnd.next;
+            }
+            node = node.next;
+            counter++;
+        }
+        return kthNodeFromEnd;
+    }
+
+    public void partitionList(int x)
+    {
+        Node node = head;
+        Node firstInferiorNode = null;
+        Node lastInferiorNode = null;
+        Node firstSuperiorNode = null;
+        Node lastSuperiorNode = null;
+        while(node != null)
+        {
+            if (node.value < x)
+            {
+                if (lastInferiorNode == null)
+                {
+                    firstInferiorNode = node;
+                }
+                else{
+                    lastInferiorNode.next = node;
+                }
+                lastInferiorNode = node;
+
+            }
+            else
+            {
+                if (lastSuperiorNode == null)
+                {
+                    firstSuperiorNode = node;
+                }
+                else{
+
+                    lastSuperiorNode.next = node;
+                }
+                lastSuperiorNode = node;
+            }
+            node = node.next;
+        }
+
+        if (lastSuperiorNode != null)
+        {
+            lastSuperiorNode.next = null;
+            tail = lastSuperiorNode;
+        }
+
+
+        if (lastInferiorNode == null && firstSuperiorNode != null)
+        {
+            head = firstSuperiorNode;
+        }
+
+
+        if (firstInferiorNode != null)
+        {
+            head = firstInferiorNode;
+        }
+        if (firstSuperiorNode != null && lastInferiorNode != null)
+        {
+            lastInferiorNode.next = firstSuperiorNode;
+        }
+
+        if (lastSuperiorNode == null && lastInferiorNode != null)
+        {
+            tail = lastInferiorNode;
+            lastInferiorNode.next = null;
+        }
+    }
+
+    public void removeDuplicates()
+    {
+        Set<Integer> set = new HashSet();
+        Node node = head;
+        Node prevNode = null;
+        while(node != null)
+        {
+            if (set.contains(node.value))
+            {
+                prevNode.next = node.next;
+                node.next = null;
+            }
+            else{
+                set.add(node.value);
+                prevNode = node;
+            }
+            node = node.next;
+        }
+        if (set.size() == 1)
+        {
+            head.next = null;
+        }
+    }
+
+    public int binaryToDecimal()
+    {
+        int num = 0;
+        Node node = head;
+        while (node != null)
+        {
+            num = (num * 2) + node.value;
+            node = node.next;
+        }
+        return num;
+    }
+
+    public void reverseBetween(int m, int n)
+    {
+        Node node = head;
+        int indexCounter = 0;
+        Node headInBetweenRange = null;
+        Node originalHeadInBetweenRange = null;
+        Node prevNode = null;
+        Node connectingStartNode = null;
+        Node connectingEndNode = null;
+
+        while(node != null)
+        {
+            if (indexCounter == m)
+            {
+                headInBetweenRange = node;
+                connectingStartNode = prevNode;
+                originalHeadInBetweenRange = node;
+            }
+
+            if (indexCounter > m && indexCounter <= n)
+            {
+                Node nextNode = node.next;
+                node.next = headInBetweenRange;
+                prevNode.next = nextNode;
+                headInBetweenRange = node;
+                node = prevNode;
+            }
+            if (indexCounter == n+1)
+            {
+                connectingEndNode = node;
+            }
+            prevNode = node;
+            node= node.next;
+            indexCounter++;
+        }
+
+        if (connectingStartNode != null)
+        {
+            connectingStartNode.next = headInBetweenRange;
+        }
+        else{
+            head = headInBetweenRange;
+        }
+
+        if (connectingEndNode != null && originalHeadInBetweenRange != null)
+        {
+            originalHeadInBetweenRange.next = connectingEndNode;
+        }
+        else{
+            tail = originalHeadInBetweenRange;
+            tail.next = null;
+        }
+
     }
 
     public void printList() {
