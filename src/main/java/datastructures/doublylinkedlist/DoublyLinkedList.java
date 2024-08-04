@@ -25,6 +25,12 @@ public class DoublyLinkedList {
             this.value = value;
         }
 
+        @Override
+        public String toString()
+        {
+            return String.format("value - %s" , value);
+        }
+
     }
 
     public Node getHead() {
@@ -298,6 +304,69 @@ public class DoublyLinkedList {
         int oldHeadValue = head.value;
         head.value = oldTailValue;
         tail.value = oldHeadValue;
+    }
+
+    public void reverse()
+    {
+        if (head == tail)
+        {
+            Node oldHead = head;
+            head = tail;
+            tail = oldHead;
+            return;
+        }
+
+        Node node = tail;
+        Node oldHead = head;
+        Node oldTail = tail;
+        while(node != null)
+        {
+            Node oldPrev = node.prev;
+            node.prev = node.next;
+            node.next = oldPrev;
+            node = oldPrev;
+
+        }
+
+        head = oldTail;
+        tail = oldHead;
+    }
+
+    public boolean isPalindrome()
+    {
+        if (head == tail) return true;
+
+        Node node1 = head, node2 = tail, prevNode = null;
+        while(!((prevNode == node2) || node1 == node2))
+        {
+            if (node1.value != node2.value)
+            {
+                return false;
+            }
+            prevNode = node1;
+            node1 = node1.next;
+            node2 = node2.prev;
+        }
+
+        return true;
+    }
+
+    public void swapPairs()
+    {
+        Node node = head;
+        while(node != null)
+        {
+            int nodeOldValue = node.value;
+            if (node.next != null)
+            {
+                node.value = node.next.value;
+                node.next.value = nodeOldValue;
+                node = node.next.next;
+            }
+            else{
+                node = node.next;
+            }
+        }
     }
 
 

@@ -5,12 +5,16 @@ public class Main
     public static void main(String[] args) {
         DoublyLinkedList myDLL = new DoublyLinkedList(1);
         myDLL.append(2);
+        myDLL.append(3);
+        myDLL.append(4);
+        myDLL.append(5);
 
-        // (2) Items - Returns 2 Node
-        System.out.println(myDLL.removeLast().value);
-        // (1) Item - Returns 1 Node
-        System.out.println(myDLL.removeLast().value);
-        // (0) Items - Returns null
-        System.out.println(myDLL.removeLast());
+        System.out.println("DLL before reverse:");
+        myDLL.printList();
+
+        myDLL.reverse();
+
+        System.out.println("\nDLL after reverse:");
+        myDLL.printList();
     }
 }
