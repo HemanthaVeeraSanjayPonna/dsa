@@ -57,6 +57,31 @@ public class Main {
         return stack.isEmpty();
     }
 
+    public static void sortStack(StackArrayList<Integer> stack)
+    {
+        StackArrayList<Integer> tempStack = new StackArrayList<>();
+        while(!stack.isEmpty())
+        {
+            Integer topItem = stack.pop();
+            if (tempStack.peek() == null)
+            {
+                tempStack.push(topItem);
+                continue;
+            }
+            while(tempStack.peek() != null && topItem < tempStack.peek())
+            {
+                stack.push(tempStack.pop());
+            }
+            tempStack.push(topItem);
+        }
+
+        while(!tempStack.isEmpty())
+        {
+            stack.push(tempStack.pop());
+        }
+
+    }
+
     public static void testAndPrint(String testStr, boolean expected) {
         // Run the test and store the result
         boolean result = isBalancedParentheses(testStr);
@@ -81,30 +106,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String myString = "hello";
-        String reversedString = reverseString(myString);
-        System.out.println(reversedString);
+        StackArrayList<Integer> stack = new StackArrayList<>();
+        stack.push(3);
+        stack.push(1);
+        stack.push(4);
+        stack.push(2);
+        stack.push(4);
+        stack.push(3);
 
-        /*
-            EXPECTED OUTPUT:
-            ----------------
-            olleh
-        */
+         System.out.println("Before sorting:");
+         stack.printStack();
 
+         sortStack(stack);
 
-        testAndPrint("()", true);
-        testAndPrint("()()", true);
-        testAndPrint("(())", true);
-        testAndPrint("()()()", true);
-        testAndPrint("(()())", true);
-        testAndPrint(")()(", false);
-        testAndPrint(")(", false);
-        testAndPrint("(()", false);
-        testAndPrint("))", false);
-        testAndPrint("(", false);
-        testAndPrint(")", false);
-
-
+         System.out.println("\nAfter sorting:");
+         stack.printStack();
 
     }
 
